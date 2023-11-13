@@ -18,7 +18,7 @@ if(isset($_POST['users'])) {
         $checkQuery = "SELECT mobile_number FROM users WHERE mobile_number= '$mobile_number'";
         $result = $crud->getConnection()->query($checkQuery)->fetchAll();
         if (empty($mobile_number)) {
-            echo generateError("Please enter a mobile number.");
+            echo generateError("Please fill in all the required fields.");
         } else if (count($result) > 0) {
             echo json_encode([
                 'status' => true,
