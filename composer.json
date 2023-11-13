@@ -1,0 +1,6 @@
+{
+    "require": {
+        "guzzlehttp/guzzle": "^7.8",
+        "kavenegar/php": "^1.2"
+    }
+}
