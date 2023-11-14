@@ -8,31 +8,33 @@ use GuzzleHttp\Client;
 
 $client = new Client();
 $url = "https://api.coinlore.net/api/tickers/";
+$response = $client->get($url);
 
-try {
-    $response = $client->get($url);
-    $data = json_decode($response->getBody(), true);
-    $specifiedPriceQuery = "SELECT price FROM users";
-    $specifiedPriceResult = $crud->getConnection()->query($specifiedPriceQuery)->fetch();
-    $specifiedPrice = $specifiedPriceResult['price'];
-    
-    
-    foreach ($data['data'] as $item){
-        $symbol = $item['symbol'];
-        $price = $item['price_usd'];
+if(isset($_POST['mobile_number'])){
+    try {
+        $data = json_decode($response->getBody(), true);
+        $mobile_number = isset($json['mobile_number']);
+        $storedPriceQuery = "SELECT price, cryptocurrency_symbol FROM users WHERE mobile_number = '$mobile_number'";
+        $storedPriceResult = $crud->getConnection()->query($storedPriceQuery)->fetch();
         
-        if ($price >= $specifiedPrice) {
-            sendArz($mobile_number, $symbol, $price);
-        }
-        $result=true;
+        $storedPrice = $storedPriceResult['price'];
+        $cryptocurrencySymbol = $storedPriceResult['cryptocurrency_symbol'];
+        
+        $currentPrice = 0;
 
-        if (!$result) {
-            echo generateError('Failed to store data in the database.');
-            return;
+        foreach ($data['data'] as $ticker) {
+            if ($ticker['symbol'] === $cryptocurrencySymbol) {
+                $currentPrice = $ticker['price_usd'];
+                break;
+            }
         }
+        
+        if ($currentPrice > $storedPrice) {
+            sendArz($mobile_number, $cryptocurrencySymbol, $currentPrice);
+        }
+    } catch (Exception $e) {
+        echo generateError('Failed to retrieve API data: ' . $e->getMessage());
+        return;
     }
-} catch (Exception $e) {
-    echo generateError('Failed to retrieve API data: ' . $e->getMessage());
-    return;
 }
 ?>
