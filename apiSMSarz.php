@@ -1,6 +1,6 @@
 <?php
- function sendArz($mobile_number, $symbol, $price){
-    $message = "The price of $symbol has exceeded the specified price. Current price: $price";
+ function sendArz($mobile_number, $cryptocurrencySymbol, $currentPrice){
+    $message = "The price of $cryptocurrencySymbol has exceeded the specified price. Current price:$currentPrice ";
     $url = "https://ippanel.com/services.jspd";
     $rcpt_nm = array($mobile_number);
     $param = array(
