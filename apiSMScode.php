@@ -3,8 +3,8 @@
     $url = "https://ippanel.com/services.jspd";
     $rcpt_nm = array($mobile_number);
     $param = array(
-        'uname' => '09382573820',
-        'pass' => '1qaz1qaz',
+        'uname' => '',
+        'pass' => '',
         'from' => '+9890000145',
         'message' => 'Your random code is: ' . $verification_code ,
         'to' => json_encode($rcpt_nm),
