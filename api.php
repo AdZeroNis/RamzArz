@@ -29,7 +29,7 @@ if(isset($_POST['mobile_number'])){
             }
         }
         
-        if ($currentPrice > $storedPrice) {
+        if ($currentPrice <= $storedPrice) {
             sendArz($mobile_number, $cryptocurrencySymbol, $currentPrice);
         }
     } catch (Exception $e) {
